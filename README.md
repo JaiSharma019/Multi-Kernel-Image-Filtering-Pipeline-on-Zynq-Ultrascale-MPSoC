@@ -42,7 +42,7 @@ The image filter IP is made of three modules, `convolution.v`, `window.v` and `l
 
 ## System Integration
 
-The IP created is used in another Vivado block design project where its integrated with the Zynq PS and the AXI VDMA IP using the processor system reset IP and AXI interconnect with ILA to verify before hardware implementation, with appropiate parameters are set. And then from Vitis using C code we implement UART transfer of input and output raw bin file of image from and to the PC, and also use cache coherency as the VDMA goes directly to DDR via AXI to bypass the CPU cache.
+The IP created is used in another Vivado block design project where its integrated with the Zynq PS and the AXI VDMA IP using the processor system reset IP and AXI interconnect with ILA to verify before hardware implementation, with appropiate parameters are set. And then from Vitis using C code we implement UART transfer of input and output raw bin file of image from and to the PC, and also manually manage cache coherence via explicit flush/invalidate as the VDMA goes directly to DDR via AXI to bypass the CPU cache.
 
 ### UART Configuration
 
@@ -50,7 +50,7 @@ The IP created is used in another Vivado block design project where its integrat
 
 * In the C porgram we utilize the function `XUartPs_Send`/`XUartPs_Recv` to transfer as many bytes as UART FIFO can handle per call. Thus the loop will accumulate the the partial transfers until the full image is transfered.
 
-### Cache Coherency
+### Cache Management
 
 * The ARM core writes image bytes into a CPU cache line. So without flushing, those bytes may not exist in physical DDR, but still the VDMA which goes to DDR directly via AXI, bypassing the CPU cache would read stale/garbage values. Hence used `Xil_DCacheFlushRange` before DmaStart.
 
