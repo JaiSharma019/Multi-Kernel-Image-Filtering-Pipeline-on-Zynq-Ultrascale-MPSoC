@@ -6,6 +6,8 @@ A hardware image filtering accelerator, implemented from RTL, integrated into a 
 
 The PS core recieves the raw image over UART1, writing it into DDR, then starting the AXI VDMA streaming the pixels through filter IP and writing the result back to separate DDR region, then the PS polls the VDMA's frame counter interrupt to detect the completion and then sends the filtered image back over UART1, which is then converted from raw bin file to image.
 
+![Figure 1](<images/block_design.png>)
+
 ## IP Architecture
 
 The image filter IP is made of three modules, `convolution.v`, `window.v` and `lineBuffer.v`, wrapped under a top module (`image_filter_top.v`). Their working is explained below: 
