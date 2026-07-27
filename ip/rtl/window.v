@@ -62,12 +62,12 @@ module window#(
     ) LB1 (
         .clk(clk),
         .reset_n(reset_n),
-        .valid_i(valid_i),         // Input is live stream
-        .data_i({tlast_i,data_i}), // Input is live stream
+        .valid_i(valid_i),         // input in live stream is valid
+        .data_i({tlast_i,data_i}), // input is live stream
         .ready_o(ready_o),         // LB1 dictates if the whole IP is ready for upstream data
         .valid_o(lb1_valid),
         .data_o(lb1_data),
-        .ready_i(enable)           // Moves along with the pipeline
+        .ready_i(enable)           // this moves along with the pipeline
     );
     
     // Line Buffer 2: Delays LB1's output by 1 Row (Total 2 Rows delay)
@@ -82,7 +82,7 @@ module window#(
         .ready_o(ready1),                  // LB1 talks to upstream (DMA) as that is the front gate door
         .valid_o(lb2_valid),
         .data_o(lb2_data),
-        .ready_i(enable)    // Moves in with the pipeline
+        .ready_i(enable)                   // this also moves in with the pipeline
     );
     
     // shift registers

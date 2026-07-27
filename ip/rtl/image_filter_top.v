@@ -152,7 +152,7 @@ module image_filter_top #(
                 .clk(clk),
                 .reset_n(reset_n),
                 .window_data_i(window_data),
-                .window_valid_i(window_valid), // && m_axis_tready
+                .window_valid_i(window_valid), 
                 .conv_valid_o(m_axis_tvalid),
                 .pixel_o(m_axis_tdata),
                 .tlast_i(window_tlast),

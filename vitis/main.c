@@ -141,7 +141,7 @@ int main()
     xil_printf("Input image received.\r\n");
 
 
-    // cache coherency, flushing the processor's cache to physical RAM so the VDMA can see the input image
+    // manual cache management, flushing the processor's cache to physical RAM so the VDMA can see the input image
     Xil_DCacheFlushRange(SRC_BUFFER_ADDR, IMAGE_WIDTH * (IMAGE_HEIGHT+1) * BYTES_PER_PIXEL);
 
     memset((void *)DEST_BUFFER_ADDR, 0x00, IMAGE_WIDTH * IMAGE_HEIGHT * BYTES_PER_PIXEL);
@@ -168,7 +168,7 @@ int main()
     XAxiVdma_DmaStop(&VdmaInstance, XAXIVDMA_WRITE);
 
     while (XAxiVdma_IsBusy(&VdmaInstance, XAXIVDMA_WRITE)) {
-        // wait for clean halt confirmation
+        // waiting for clean halt confirmation
     }
 
     Xil_DCacheInvalidateRange(DEST_BUFFER_ADDR, IMAGE_WIDTH * IMAGE_HEIGHT * BYTES_PER_PIXEL);
