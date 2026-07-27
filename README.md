@@ -70,11 +70,12 @@ The IP created is used in another Vivado block design project where its integrat
 
 * There had been a single corner pixel discrepancy consistent across all filters and is due to the write completion timing margin at end of the frame, the frame counter IRQ fires as the last DMA burst is issued potentially slightly before write response confirms it has landed in DDR.
 
-| Filter | PSNR | SSIM |
-|---|---|---|
-| Gaussian Blur | 62.34 dB | 1.00000 | 
-| Full Sobel | 54.51 dB | 1.00000 | 
-| Sharpen | 61.52 dB | 1.00000 | 
+| Filter | MSE | PSNR | SSIM |
+|---|---|---|---|
+| Gaussian Blur | 0.038 | 62.34 dB | 1.00000 | 
+| Full Sobel | 0.230 | 54.51 dB | 1.00000 | 
+| Sharpen | 0.046 | 61.52 dB | 1.00000 | 
+| Scharr | 0.230 | 54.51 dB | 1.00000 |
 
 ## Repository Structure
 
