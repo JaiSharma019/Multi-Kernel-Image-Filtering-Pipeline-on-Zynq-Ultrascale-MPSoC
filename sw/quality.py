@@ -1,20 +1,7 @@
 """
-Compute MSE, PSNR, and SSIM between a hardware/simulation output image and
-an independently derived golden reference, for any supported filter.
-
-Usage:
-    python quality.py <original_image> <hardware_image> --filter FILTER [--mode rgb|gray]
+python quality.py <original_image> <hardware_image> --filter <filter> [--mode rgb|gray]
 
 Supported filters: blur, sobel_x, sobel_xy, sharpen, scharr
-
-Examples:
-    python quality.py lena_rgb.png lena_rgb_gaussBlur_fpga.png --filter blur --mode rgb
-    python quality.py lena_rgb.png lena_rgb_sobel_fpga.png --filter sobel_xy --mode rgb
-    python quality.py lena_gray.png lena_gray_sobel_fpga.png --filter sobel_x --mode gray
-
-The golden reference is built internally using the same integer arithmetic and
-edge-replication convention as the RTL (truncating shift, edge-replicate border),
-so a near-perfect score (60+ dB PSNR, SSIM=1.00000) indicates correct hardware output.
 """
 import sys
 import argparse
@@ -24,11 +11,7 @@ from skimage.metrics import structural_similarity as ssim
 from skimage.metrics import peak_signal_noise_ratio as psnr
 
 
-# -----------------------------------------------------------------------
-# Convolution helper — matches RTL convention exactly:
-#   - edge-replicated (clamp-to-edge) borders
-#   - integer arithmetic throughout (no floating-point rounding)
-# -----------------------------------------------------------------------
+
 def convolve3x3(channel, kernel_int):
     h, w = channel.shape
     padded = np.pad(channel, 1, mode='edge').astype(np.int64)
@@ -39,9 +22,7 @@ def convolve3x3(channel, kernel_int):
     return out
 
 
-# -----------------------------------------------------------------------
-# Golden reference generators — one per filter, matching RTL normalization
-# -----------------------------------------------------------------------
+# Golden reference generator
 KERNELS = {
     'blur': np.array([[1, 2, 1], [2, 4, 2], [1, 2, 1]], dtype=np.int64),
     'sobel_x': np.array([[1, 0, -1], [2, 0, -2], [1, 0, -1]], dtype=np.int64),
@@ -53,7 +34,7 @@ KERNELS = {
 
 
 def generate_golden(channel, filter_name):
-    """Apply the named filter to one image channel, returning uint8."""
+    
     if filter_name == 'blur':
         # Sum of coefficients = 16, so divide by 16 (truncating right-shift by 4)
         result = convolve3x3(channel, KERNELS['blur']) >> 4
@@ -82,9 +63,7 @@ def generate_golden(channel, filter_name):
     return np.clip(result, 0, 255).astype(np.uint8)
 
 
-# -----------------------------------------------------------------------
-# Main verification function
-# -----------------------------------------------------------------------
+# main verification
 def run_verification(original_path, hardware_path, filter_name, mode):
     pil_mode = 'RGB' if mode == 'rgb' else 'L'
 
@@ -111,7 +90,7 @@ def run_verification(original_path, hardware_path, filter_name, mode):
     ssim_val = ssim(golden, hardware, data_range=255,
                     channel_axis=channel_axis if mode == 'rgb' else None)
 
-    # Pixel-exact analysis
+    # pixel exact analysis
     diff = np.abs(golden.astype(np.int64) - hardware.astype(np.int64))
     if mode == 'rgb':
         differing = np.argwhere(diff.sum(axis=2) > 0)

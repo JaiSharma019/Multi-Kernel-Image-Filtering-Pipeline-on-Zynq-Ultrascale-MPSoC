@@ -1,14 +1,6 @@
 """
-Convert an image to a hex file for Verilog simulation.
+python img2hex.py <input_image> <output_hex> [--mode rgb|gray]
 
-Usage:
-    python img2hex.py <input_image> <output_hex> [--mode rgb|gray]
-
-Examples:
-    python img2hex.py lena_rgb.png input_image_rgb.hex --mode rgb
-    python img2hex.py lena_gray.png input_image.hex --mode gray
-
-Default mode is rgb if --mode is not specified.
 """
 import sys
 import argparse

@@ -1,15 +1,6 @@
 """
-Convert a Verilog simulation hex output file back to an image.
+python hex2img.py <input_hex> <output_image> [--mode rgb|gray] [--width W] [--height H]
 
-Usage:
-    python hex2img.py <input_hex> <output_image> [--mode rgb|gray] [--width W] [--height H]
-
-Examples:
-    python hex2img.py output_image_rgb.hex lena_rgb_gauss_sim.png --mode rgb
-    python hex2img.py output_image.hex lena_gray_sobel_sim.png --mode gray
-
-Default mode is rgb, default size is 512x512.
-The 'x' (uninitialized) state from Verilog simulation is treated as 0 (black).
 """
 import sys
 import argparse

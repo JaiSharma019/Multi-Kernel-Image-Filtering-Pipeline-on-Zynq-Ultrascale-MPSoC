@@ -1,16 +1,6 @@
 """
-Convert an image to a flat raw binary file for loading into FPGA DDR memory.
+python img2bin.py <input_image> <output_bin> [--mode rgb|gray]
 
-Usage:
-    python img2bin.py <input_image> <output_bin> [--mode rgb|gray]
-
-Examples:
-    python img2bin.py lena_rgb.png lena_rgb_raw.bin --mode rgb
-    python img2bin.py lena_gray.png lena_gray_raw.bin --mode gray
-
-Output is flat raw bytes — no headers, no padding.
-RGB: row-major, R-G-B byte order per pixel, 3 bytes per pixel.
-Gray: row-major, 1 byte per pixel.
 """
 import sys
 import argparse

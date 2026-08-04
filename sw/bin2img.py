@@ -1,14 +1,6 @@
 """
-Convert a flat raw binary file (from FPGA DDR memory export) back to an image.
+python bin2img.py <input_bin> <output_image> [--mode rgb|gray] [--width W] [--height H]
 
-Usage:
-    python bin2img.py <input_bin> <output_image> [--mode rgb|gray] [--width W] [--height H]
-
-Examples:
-    python bin2img.py lena_rgb_filtered.bin lena_rgb_gaussBlur_fpga.png --mode rgb
-    python bin2img.py lena_gray_filtered.bin lena_gray_sobel_fpga.png --mode gray
-
-Default mode is rgb, default size is 512x512.
 """
 import sys
 import argparse
